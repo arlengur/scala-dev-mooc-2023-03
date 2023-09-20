@@ -24,6 +24,7 @@ libraryDependencies += Dependencies.liquibase
 libraryDependencies += Dependencies.zioHttp
 libraryDependencies += Dependencies.logback
 libraryDependencies ++= Dependencies.akkaContainers
+libraryDependencies += Dependencies.postgres
 
 scalacOptions += "-Ymacro-annotations"
 libraryDependencies += "org.http4s" %% "http4s-client" % "0.23.18"

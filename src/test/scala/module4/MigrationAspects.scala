@@ -50,7 +50,7 @@ object LiquibaseService {
     classLoaderAccessor <- ZIO.effect(new ClassLoaderResourceAccessor(classLoader)).toManaged_
     fileOpener <- ZIO.effect(new CompositeResourceAccessor(fileAccessor, classLoaderAccessor)).toManaged_
     jdbcConn <- ZManaged.makeEffect(new JdbcConnection(ds.getConnection()))(c => c.close())
-    liqui <- ZIO.effect(new Liquibase("src/test/resources/liquibase/main.xml", fileOpener, jdbcConn)).toManaged_
+    liqui <- ZIO.effect(new Liquibase("liquibase/main.xml", fileOpener, jdbcConn)).toManaged_
   } yield liqui
 
 
