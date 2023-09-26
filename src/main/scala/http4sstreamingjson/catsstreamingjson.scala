@@ -13,9 +13,8 @@ import scala.concurrent.duration._
 import java.time.Instant
 
 
-object  HttpClient {
-  val builder = EmberClientBuilder.default[IO].build
-  val request = Request[IO](uri = Uri.fromString("http://localhost:8080/hello").toOption.get)
+//  val builder = EmberClientBuilder.default[IO].build
+//  val request = Request[IO](uri = Uri.fromString("http://localhost:8080/hello").toOption.get)
   //1
 
   /*val result: Resource[IO, Response[IO]] = for {
@@ -31,26 +30,26 @@ object  HttpClient {
   } yield response*/
 
   //3
-  val result = builder.use(
-    client => client.run(request).use(
-      resp => if (!resp.status.isSuccess)
-        resp.body.compile.to(Array).map(new String(_))
-      else
-        IO("Error")
-    )
-  )
-}
+//  val result = builder.use(
+//    client => client.run(request).use(
+//      resp => if (!resp.status.isSuccess)
+//        resp.body.compile.to(Array).map(new String(_))
+//      else
+//        IO("Error")
+//    )
+//  )
+//}
 
-object mainServer extends  IOApp.Simple{
-  def run(): IO[Unit] = {
-    /*for {
-      fiber <- Restfull1.serverSessionsAuthClear.use( _ => IO.never).start
-      _ <- HttpClient.result.use(IO.println)
-      //_ <- fiber.join
-    }yield()*/
-
-    for {
-      _ <- Restfull1.serverSessionsAuthClear.use(_ => HttpClient.result.flatMap(IO.println) *> IO.never)
-    } yield()
-  }
-}
+//object mainServer extends  IOApp.Simple{
+//  def run(): IO[Unit] = {
+//    /*for {
+//      fiber <- Restfull1.serverSessionsAuthClear.use( _ => IO.never).start
+//      _ <- HttpClient.result.use(IO.println)
+//      //_ <- fiber.join
+//    }yield()*/
+//
+//    for {
+//      _ <- Restfull1.serverSessionsAuthClear.use(_ => HttpClient.result.flatMap(IO.println) *> IO.never)
+//    } yield()
+//  }
+//}
