@@ -117,8 +117,8 @@ package object zio_homework {
 
     val live: ULayer[MyPrint] = ZLayer.succeed(new ServiceImpl)
 
-    def printEffectRunningTime[R, E, A](zio: ZIO[R, E, A]): ZIO[MyPrint, Nothing, ZIO[R with Clock, E, A]] =
-      ZIO.environment[MyPrint].map(_.get printEffectRunningTime zio)
+    def printEffectRunningTime[R, E, A](zio: ZIO[R, E, A]): ZIO[R with Clock with MyPrint, E, A] =
+      ZIO.environment[MyPrint].flatMap(_.get printEffectRunningTime zio)
   }
 
   /**
@@ -129,7 +129,7 @@ package object zio_homework {
   lazy val appWithTimeLogg = MyPrintService.printEffectRunningTime(
     for {
       v <- ZIO.collectAllPar(effects)
-      _ <- ZIO.effect(println(v.sum))
+      _ <- ZIO.effect(println(s"sum = ${v.sum}"))
       res <- ZIO.succeed(v.sum)
     } yield res
   )
@@ -139,6 +139,6 @@ package object zio_homework {
    */
 
   val env = MyPrintService.live
-  lazy val runApp = appWithTimeLogg.provideSomeLayer[Console](env)
+  lazy val runApp = appWithTimeLogg.provideSomeLayer[Random with Clock](env)
 
 }
